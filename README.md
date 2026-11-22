@@ -2,6 +2,7 @@
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Release](https://img.shields.io/github/v/release/Margaritana964/Bessel?label=download&color=2ea44f)](https://github.com/Margaritana964/Bessel/releases/latest)
+[![Build](https://github.com/Margaritana964/Bessel/actions/workflows/build.yml/badge.svg)](https://github.com/Margaritana964/Bessel/actions/workflows/build.yml)
 [![Platform](https://img.shields.io/badge/platform-Windows%20x64-lightgrey)](#系统要求)
 
 > **A VST3 effect that turns any audio into a harmonic generator.**

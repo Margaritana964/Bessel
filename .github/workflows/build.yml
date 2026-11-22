@@ -4,7 +4,16 @@ on:
   push:
     branches: [main]
     tags: ['v*']
+    # 只改文档不用重编整个 JUCE
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - '*.png'
   pull_request:
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - '*.png'
   workflow_dispatch:
 
 # 同一个分支连推几次时，取消还在跑的那次，别让它们排队烧分钟数
