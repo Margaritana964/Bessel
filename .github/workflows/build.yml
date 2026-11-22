@@ -22,7 +22,7 @@ jobs:
 
       # JUCE 由 CMakeLists.txt 里的 FetchContent 拉取（9.0.5）
       # 缓存一下，省掉每次 clone 的时间
-      - name: Cache JUCE
+      - name: Cache JUCE (source tarball)
         uses: actions/cache@v4
         with:
           path: build/_deps

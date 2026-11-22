@@ -33,20 +33,22 @@ endif()
 # 本地开发时用同级目录的浅克隆（快、不用每次拉）：
 #   ../JUCE
 #
-# 开源之后别人 clone 下来没有这个目录，就走 FetchContent 自动拉指定 tag。
+# 开源之后别人 clone 下来没有这个目录，就走 FetchContent 自动拉指定版本。
 # 两种都能用，不用改任何脚本。
+#
+# 用 release 压缩包而不是 git clone：JUCE 的仓库太大，浅克隆在 CI runner 上
+# 能卡十几分钟；tarball 走 CDN，二十几 MB，几十秒。
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../JUCE/CMakeLists.txt)
     message(STATUS "Bessel: 使用本地 JUCE（../JUCE）")
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../JUCE ${CMAKE_CURRENT_BINARY_DIR}/JUCE EXCLUDE_FROM_ALL)
 else()
-    message(STATUS "Bessel: 本地没有 JUCE，用 FetchContent 拉取 ${BESSEL_JUCE_TAG}")
+    message(STATUS "Bessel: 本地没有 JUCE，下载 ${BESSEL_JUCE_TAG} 源码包")
 
     include(FetchContent)
 
     FetchContent_Declare(JUCE
-        GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
-        GIT_TAG        ${BESSEL_JUCE_TAG}
-        GIT_SHALLOW    TRUE)
+        URL     https://github.com/juce-framework/JUCE/archive/refs/tags/${BESSEL_JUCE_TAG}.tar.gz
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE)
 
     FetchContent_MakeAvailable(JUCE)
 endif()
