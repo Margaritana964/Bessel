@@ -1,0 +1,32 @@
+# ── 构建产物 ─────────────────────────────────────────────────────────
+build/
+build-static/
+dist/
+cmake-build-*/
+*.log
+*.ilk
+*.pdb
+*.lib
+*.obj
+*.exe
+CMakeFiles/
+CMakeCache.txt
+build.ninja
+.ninja_deps
+.ninja_log
+
+# ── 测试生成物（用 make-test-material.py / 测试程序重新生成）────────────
+test-material/
+test-presets/
+test-appdata/
+
+# ── 本地工具链 ───────────────────────────────────────────────────────
+.vs/
+.vscode/
+*.user
+.dsh/
+
+# ── 系统垃圾 ─────────────────────────────────────────────────────────
+Thumbs.db
+.DS_Store
+desktop.ini

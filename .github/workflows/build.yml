@@ -1,0 +1,49 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  windows:
+    name: Windows x64
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # JUCE 由 CMakeLists.txt 里的 FetchContent 拉取（9.0.5）
+      # 缓存一下，省掉每次 clone 的时间
+      - name: Cache JUCE
+        uses: actions/cache@v4
+        with:
+          path: build/_deps
+          key: juce-9.0.5-${{ runner.os }}
+
+      - name: Configure
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      # DSP 测试 + 宿主视角测试。任何一个失败都会让整个 job 变红。
+      - name: Run DSP tests
+        run: build\PmEffectTest_artefacts\Release\PmEffectTest.exe
+
+      - name: Run host scan test
+        run: build\PluginScanTest_artefacts\Release\PluginScanTest.exe
+
+      - name: Render UI snapshot
+        run: build\UiSnapshot_artefacts\Release\UiSnapshot.exe
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Bessel-Windows-x64
+          path: |
+            build/Bessel_artefacts/Release/VST3/**
+            build/UiSnapshot_artefacts/Release/ui-snapshot*.png
+          if-no-files-found: error
