@@ -7,6 +7,11 @@ on:
   pull_request:
   workflow_dispatch:
 
+# 同一个分支连推几次时，取消还在跑的那次，别让它们排队烧分钟数
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   windows:
     name: Windows x64

@@ -96,7 +96,6 @@ build\UiSnapshot_artefacts\Release\UiSnapshot.exe          # 出界面快照
 |---|---|
 | [技术内幕](docs/engineering.md) | 信号流、每条参数的物理意义、实测数据、所有踩过的坑 |
 | [参与开发](CONTRIBUTING.md) | 构建、测试、提交约定 |
-| [介绍视频口播稿](docs/video-script.md) | 3 分钟版 + 60 秒版 + 拍摄清单 |
 
 ## 系统要求
 
