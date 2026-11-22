@@ -25,6 +25,7 @@ jobs:
   windows:
     name: Windows x64
     runs-on: windows-2022
+    timeout-minutes: 40
 
     steps:
       - uses: actions/checkout@v4
@@ -40,8 +41,10 @@ jobs:
       - name: Configure
         run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64
 
+      # 只编 CI 需要的目标：每个 target 都会把 JUCE 模块再编一遍，
+      # 少一个 target 就省几分钟。TrackReport / UiSnapshot 只在本地用。
       - name: Build
-        run: cmake --build build --config Release --parallel
+        run: cmake --build build --config Release --parallel --target Bessel_VST3 PmEffectTest PluginScanTest
 
       # DSP 测试 + 宿主视角测试。任何一个失败都会让整个 job 变红。
       - name: Run DSP tests
@@ -50,14 +53,10 @@ jobs:
       - name: Run host scan test
         run: build\PluginScanTest_artefacts\Release\PluginScanTest.exe
 
-      - name: Render UI snapshot
-        run: build\UiSnapshot_artefacts\Release\UiSnapshot.exe
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: Bessel-Windows-x64
-          path: |
-            build/Bessel_artefacts/Release/VST3/**
-            build/UiSnapshot_artefacts/Release/ui-snapshot*.png
+          path: build/Bessel_artefacts/Release/VST3/**
           if-no-files-found: error
